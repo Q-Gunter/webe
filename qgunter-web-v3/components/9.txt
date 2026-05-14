@@ -1,0 +1,86 @@
+You are given a task to integrate an existing React component in the codebase
+
+The codebase should support:
+- shadcn project structure  
+- Tailwind CSS
+- Typescript
+
+If it doesn't, provide instructions on how to setup project via shadcn CLI, install Tailwind or Typescript.
+
+Determine the default path for components and styles. 
+If default path for components is not /components/ui, provide instructions on why it's important to create this folder
+Copy-paste this component to /components/ui folder:
+```tsx
+background-plus.tsx
+interface PlusPatternBackgroundProps {
+  plusSize?: number
+  plusColor?: string
+  backgroundColor?: string
+  className?: string
+  style?: React.CSSProperties
+  fade?: boolean
+  [key: string]: any
+}
+
+export const BackgroundPlus: React.FC<PlusPatternBackgroundProps> = ({
+  plusColor = '#fb3a5d',
+  backgroundColor = 'transparent',
+  plusSize = 60,
+  className,
+  fade = true,
+  style,
+  ...props
+}) => {
+  const encodedPlusColor = encodeURIComponent(plusColor)
+
+  const maskStyle: React.CSSProperties = fade
+    ? {
+        maskImage: 'radial-gradient(circle, white 10%, transparent 90%)',
+        WebkitMaskImage: 'radial-gradient(circle, white 10%, transparent 90%)',
+      }
+    : {}
+
+  //  SVG taken from https://heropatterns.com/
+  const backgroundStyle: React.CSSProperties = {
+    backgroundColor,
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='${plusSize}' height='${plusSize}' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='${encodedPlusColor}' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+    ...maskStyle,
+    ...style,
+  }
+
+  return (
+    <div
+      className={`absolute inset-0 h-full w-full ${className}`}
+      style={backgroundStyle}
+      {...props}
+    />
+  )
+}
+
+export default BackgroundPlus
+
+demo.tsx
+import { BackgroundPlus } from "@/components/ui/background-plus";
+
+export default function DemoOne() {
+  return <BackgroundPlus />;
+}
+
+```
+
+Implementation Guidelines
+ 1. Analyze the component structure and identify all required dependencies
+ 2. Review the component's argumens and state
+ 3. Identify any required context providers or hooks and install them
+ 4. Questions to Ask
+ - What data/props will be passed to this component?
+ - Are there any specific state management requirements?
+ - Are there any required assets (images, icons, etc.)?
+ - What is the expected responsive behavior?
+ - What is the best place to use this component in the app?
+
+Steps to integrate
+ 0. Copy paste all the code above in the correct directories
+ 1. Install external dependencies
+ 2. Fill image assets with Unsplash stock images you know exist
+ 3. Use lucide-react icons for svgs or logos if component requires them
